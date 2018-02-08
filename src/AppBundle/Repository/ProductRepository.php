@@ -2,7 +2,7 @@
 
 namespace AppBundle\Repository;
 
-class ProduitRepository extends AbstractRepository
+class ProductRepository extends AbstractRepository
 {
     public function search($term, $order = 'asc', $limit = 20, $offset = 0)
     {

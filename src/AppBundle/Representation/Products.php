@@ -5,10 +5,10 @@ namespace AppBundle\Representation;
 use Pagerfanta\Pagerfanta;
 use JMS\Serializer\Annotation\Type;
 
-class Produits
+class Products
 {
     /**
-     * @Type("array<AppBundle\Entity\Produit>")
+     * @Type("array<AppBundle\Entity\Product>")
      */
     public $data;
 

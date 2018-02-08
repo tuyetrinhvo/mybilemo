@@ -8,20 +8,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ProduitRepository")
- * @ORM\Table(name="produit")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ProductRepository")
+ * @ORM\Table(name="product")
  * @Serializer\ExclusionPolicy("all")
  *
  * @Hateoas\Relation(
  *     "self",
- *     href = @Hateoas\Route("app_produit_show",
+ *     href = @Hateoas\Route("app_product_show",
  *     parameters = { "id" = "expr(object.getId())" },
  *     absolute = true
  *     )
  * )
  * @Hateoas\Relation(
  *     "create",
- *     href = @Hateoas\Route("app_produit_create",
+ *     href = @Hateoas\Route("app_product_create",
  *     parameters = { "id" = "expr(object.getId())" },
  *     absolute = true
  *     )
@@ -29,21 +29,21 @@ use Hateoas\Configuration\Annotation as Hateoas;
  *
  * @Hateoas\Relation(
  *     "modify",
- *     href = @Hateoas\Route("app_produit_update",
+ *     href = @Hateoas\Route("app_product_update",
  *     parameters = { "id" = "expr(object.getId())" },
  *     absolute = true
  *     )
  * )
  * @Hateoas\Relation(
  *     "delete",
- *     href = @Hateoas\Route("app_produit_delete",
+ *     href = @Hateoas\Route("app_product_delete",
  *     parameters = { "id" = "expr(object.getId())" },
  *     absolute = true
  *     )
  * )
  *
  */
-class Produit
+class Product
 {
     /**
      * @ORM\Column(type="integer")
@@ -61,7 +61,7 @@ class Produit
      * @Assert\NotBlank()
      * @Serializer\Since("1.0")
      */
-    private $nom;
+    private $name;
 
     /**
      * @ORM\Column(type="text")
@@ -77,7 +77,7 @@ class Produit
      * @Serializer\Expose()
      * @Serializer\Since("2.0")
      */
-    private $marque;
+    private $brand;
 
     /**
      * @ORM\Column(type="decimal", precision=8, scale=2)
@@ -96,27 +96,27 @@ class Produit
 
 
     /**
-     * Set nom
+     * Set name
      *
-     * @param string $nom
+     * @param string $name
      *
-     * @return Produit
+     * @return Product
      */
-    public function setNom($nom)
+    public function setName($name)
     {
-        $this->nom = $nom;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get nom
+     * Get name
      *
      * @return string
      */
-    public function getNom()
+    public function getName()
     {
-        return $this->nom;
+        return $this->name;
     }
 
     /**
@@ -124,7 +124,7 @@ class Produit
      *
      * @param string $description
      *
-     * @return Produit
+     * @return Product
      */
     public function setDescription($description)
     {
@@ -144,27 +144,27 @@ class Produit
     }
 
     /**
-     * Set marque
+     * Set brand
      *
-     * @param string $marque
+     * @param string $brand
      *
-     * @return Produit
+     * @return Product
      */
-    public function setMarque($marque)
+    public function setBrand($brand)
     {
-        $this->marque = $marque;
+        $this->brand = $brand;
 
         return $this;
     }
 
     /**
-     * Get marque
+     * Get brand
      *
      * @return string
      */
-    public function getMarque()
+    public function getBrand()
     {
-        return $this->marque;
+        return $this->brand;
     }
 
     /**
@@ -172,7 +172,7 @@ class Produit
      *
      * @param string $price
      *
-     * @return Produit
+     * @return Product
      */
     public function setPrice($price)
     {

@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Produit;
 use AppBundle\Exception\ResourceValidationException;
-use AppBundle\Representation\Produits;
+use AppBundle\Representation\Products;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Nelmio\ApiDocBundle\Annotation as Doc;
@@ -12,10 +12,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\Validator\ConstraintViolationList;
 
-class ProduitController extends FOSRestController
+class ProductController extends FOSRestController
 {
     /**
-     * @Rest\Get("/produits", name="app_produit_list")
+     * @Rest\Get("/produits", name="app_product_list")
      * @Rest\QueryParam(
      *     name="keyword",
      *     requirements="[a-zA-Z0-9]",
@@ -43,65 +43,65 @@ class ProduitController extends FOSRestController
      * @Rest\View()
      *
      * @Doc\ApiDoc(
-     *     section="Produits",
+     *     section="Products",
      *     resource=true,
-     *     description="Get the list of all produits"
+     *     description="Get the list of all products"
      * )
      */
     public function listAction(ParamFetcherInterface $paramFetcher)
     {
-        $pager = $this->getDoctrine()->getRepository('AppBundle:Produit')->search(
+        $pager = $this->getDoctrine()->getRepository('AppBundle:Product')->search(
             $paramFetcher->get('keyword'),
             $paramFetcher->get('order'),
             $paramFetcher->get('limit'),
             $paramFetcher->get('offset')
         );
 
-        return new Produits($pager);
+        return new Products($pager);
     }
 
     /**
      * @Rest\Get(
-     *     path = "/produits/{id}",
-     *     name = "app_produit_show",
+     *     path = "/products/{id}",
+     *     name = "app_product_show",
      *     requirements = {"id"="\d+"}
      * )
      * @Rest\View
      * @Doc\ApiDoc(
-     *     section="Produits",
+     *     section="Products",
      *     resource=true,
-     *     description="Get one produit",
+     *     description="Get one product",
      *     requirements={
      *     {
      *        "name"="id",
      *        "dataType"="integer",
      *        "requirements"="\d+",
-     *        "description"="The produit unique identifier."
+     *        "description"="The product unique identifier."
      *     }
      *   }
      * )
      */
-    public function showAction(Produit $produit)
+    public function showAction(Product $product)
     {
-        return $produit;
+        return $product;
     }
 
     /**
-     * @Rest\Post("/produits")
+     * @Rest\Post("/products")
      * @Rest\View(StatusCode = 201)
-     * @ParamConverter("produit", converter="fos_rest.request_body")
+     * @ParamConverter("product", converter="fos_rest.request_body")
      *
      * @Doc\ApiDoc(
-     *     section="Produits",
+     *     section="Products",
      *     resource=true,
-     *     description="Create an produit",
+     *     description="Create an product",
      *     statusCodes={
      *        201="Returned when created",
      *        400="Returned when a violation is raised by validation"
      *     }
      * )
      */
-    public function createAction(Produit $produit, ConstraintViolationList $violations)
+    public function createAction(Product $product, ConstraintViolationList $violations)
     {
         if (count($violations)) {
             $message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
@@ -114,22 +114,22 @@ class ProduitController extends FOSRestController
 
         $em = $this->getDoctrine()->getManager();
 
-        $em->persist($produit);
+        $em->persist($product);
         $em->flush();
 
-        return $produit;
+        return $product;
     }
 
     /**
      * @Rest\View(StatusCode = 200)
      * @Rest\Put(
-     *     path = "/produits/{id}",
-     *     name = "app_produit_update",
+     *     path = "/products/{id}",
+     *     name = "app_product_update",
      *     requirements = {"id"="\d+"}
      * )
-     * @ParamConverter("newproduit", converter="fos_rest.request_body")
+     * @ParamConverter("newproduct", converter="fos_rest.request_body")
      */
-    public function updateAction(Produit $produit, Produit $newproduit, ConstraintViolationList $violations)
+    public function updateAction(Product $product, Product $newproduct, ConstraintViolationList $violations)
     {
         if (count($violations)) {
             $message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
@@ -140,25 +140,25 @@ class ProduitController extends FOSRestController
             throw new ResourceValidationException($message);
         }
 
-        $produit->setTitle($newproduit->getTitle());
-        $produit->setContent($newproduit->getContent());
+        $product->setTitle($newproduct->getTitle());
+        $product->setContent($newproduct->getContent());
 
         $this->getDoctrine()->getManager()->flush();
 
-        return $produit;
+        return $product;
     }
 
     /**
      * @Rest\View(StatusCode = 204)
      * @Rest\Delete(
-     *     path = "/produits/{id}",
-     *     name = "app_produit_delete",
+     *     path = "/products/{id}",
+     *     name = "app_product_delete",
      *     requirements = {"id"="\d+"}
      * )
      */
-    public function deleteAction(Produit $produit)
+    public function deleteAction(Product $product)
     {
-        $this->getDoctrine()->getManager()->remove($produit);
+        $this->getDoctrine()->getManager()->remove($product);
 
         return;
     }
