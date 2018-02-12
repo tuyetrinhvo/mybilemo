@@ -4,13 +4,12 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Product;
 use AppBundle\Exception\ResourceValidationException;
-use AppBundle\Representation\Products;
+use AppBundle\Representation\ProductRepresentation;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use FOS\RestBundle\Controller\FOSRestController;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 class ProductController extends FOSRestController
@@ -47,7 +46,7 @@ class ProductController extends FOSRestController
      * @Rest\View(StatusCode = 200)
      *
      * @Doc\ApiDoc(
-     *     section="Products",
+     *     section="AbstractRepresentation",
      *     resource=true,
      *     description="Get the list of all products",
      *     statusCodes={
@@ -66,7 +65,7 @@ class ProductController extends FOSRestController
             $paramFetcher->get('offset')
         );
 
-        return new Products($pager);
+        return new ProductRepresentation($pager);
         }
 
 
@@ -78,7 +77,7 @@ class ProductController extends FOSRestController
      * )
      * @Rest\View(StatusCode = 200)
      * @Doc\ApiDoc(
-     *     section="Products",
+     *     section="AbstractRepresentation",
      *     resource=true,
      *     description="Get one product",
      *     requirements={
@@ -110,7 +109,7 @@ class ProductController extends FOSRestController
      * @ParamConverter("product", converter="fos_rest.request_body")
      *
      * @Doc\ApiDoc(
-     *     section="Products",
+     *     section="AbstractRepresentation",
      *     resource=true,
      *     description="Create a new product",
      *     requirements={
@@ -156,7 +155,7 @@ class ProductController extends FOSRestController
      * )
      * @ParamConverter("newproduct", converter="fos_rest.request_body")
      * @Doc\ApiDoc(
-     *		section="Products",
+     *		section="AbstractRepresentation",
      *		resource=true,
      *		description="Modify a product",
      *		requirements={

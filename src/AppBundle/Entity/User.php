@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
 use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
@@ -14,9 +14,16 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
- * @UniqueEntity("email")
+ * @UniqueEntity(fields={"email"}, message="Un compte existe déjà avec cet email")
  *
  * @Serializer\ExclusionPolicy("all")
+ *
+ * @Hateoas\Relation(
+ *      "list user",
+ *      href = @Hateoas\Route("app_user_list",
+ *          absolute = true
+ *     )
+ * )
  *
  * @Hateoas\Relation(
  *      "show user",
@@ -50,7 +57,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  *
  */
-class User implements UserInterface
+class User extends BaseUser
 {
     /**
      * @var int
@@ -59,134 +66,29 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="username", type="string", length=255)
      * @Assert\NotBlank()
      * @Serializer\Expose()
      * @Serializer\Since("1.0")
      */
-    private $username;
+    protected $username;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=255)
      * @Assert\NotBlank()
      * @Serializer\Expose()
      * @Serializer\Since("1.0")
      */
-    private $password;
+    protected $password;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255)
+     * @ORM\Column(unique=true)
      * @Assert\NotBlank()
      * @Serializer\Expose()
      * @Serializer\Since("1.0")
      */
-    private $email;
+    protected $email;
 
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set username
-     *
-     * @param string $username
-     *
-     * @return User
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * Get username
-     *
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
-     * Set password
-     *
-     * @param string $password
-     *
-     * @return User
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Get password
-     *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * Set email
-     *
-     * @param string $email
-     *
-     * @return User
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    public function eraseCredentials()
-    {
-
-    }
-
-    public function getRoles()
-    {
-        return ['ROLE_USER'];
-    }
-
-    public function getSalt()
-    {
-
-    }
 }
 

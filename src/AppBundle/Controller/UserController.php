@@ -3,14 +3,15 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
-use AppBundle\Representation\Users;
+use AppBundle\Representation\UserRepresentation;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\Controller\FOSRestController;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use AppBundle\Exception\ResourceValidationException;
 use Nelmio\ApiDocBundle\Annotation as Doc;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 
@@ -20,6 +21,7 @@ class UserController extends FOSRestController
      * @Rest\Get(
      *     path = "/users",
      *     name = "app_user_list")
+     *
      * @Rest\QueryParam(
      *     name="order",
      *     requirements="asc|desc",
@@ -67,7 +69,7 @@ class UserController extends FOSRestController
                 $paramFetcher->get('keyword')
             );
 
-            return new Users($pager);
+            return new UserRepresentation($pager);
 
     }
 
@@ -139,25 +141,17 @@ class UserController extends FOSRestController
                 throw new ResourceValidationException($message);
             }
 
-        $password = $this->get('security.password_encoder')
-                         ->encodePassword($user, $user->getPassword());
-        $user->setPassword($password);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
 
-        $client = $this->get(ClientManager::class)->createClient($this->getParameter('redirect_uri'));
+        return $this->view(
+            $user,
+            Response::HTTP_CREATED,
+            ['Location' => $this->generateUrl('api_user_show', ['id' => $user->getId(), UrlGeneratorInterface::ABSOLUTE_URL])]
+        );
 
-        return[
-            'user' => $user,
-            '_embedded' => [
-                'client' =>[
-                    'client_id' => $client->getPublicId(),
-                    'client_secret' => $client->getSecret()
-                ]
-            ]
-        ];
      }
 
 
@@ -201,7 +195,7 @@ class UserController extends FOSRestController
         }
 
         $user->setUsername($newUser->getUsername());
-        $user->setPassword($newUser->getPassword());
+        $user->setPlainPassword($newUser->getPlainPassword());
         $user->setEmail($newUser->getEmail());
 
         $this->getDoctrine()->getManager()->flush();

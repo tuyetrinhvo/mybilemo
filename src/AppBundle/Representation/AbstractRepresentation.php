@@ -3,13 +3,10 @@
 namespace AppBundle\Representation;
 
 use Pagerfanta\Pagerfanta;
-use JMS\Serializer\Annotation\Type;
 
-class Products
+class AbstractRepresentation
 {
-    /**
-     * @Type("array<AppBundle\Entity\Product>")
-     */
+
     public $data;
 
     public $meta;
