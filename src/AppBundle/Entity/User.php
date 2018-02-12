@@ -83,7 +83,6 @@ class User extends BaseUser
     protected $password;
 
     /**
-     * @ORM\Column(unique=true)
      * @Assert\NotBlank()
      * @Serializer\Expose()
      * @Serializer\Since("1.0")
