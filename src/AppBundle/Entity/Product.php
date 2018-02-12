@@ -80,7 +80,7 @@ class Product
     private $brand;
 
     /**
-     * @ORM\Column(type="decimal", precision=8, scale=2)
+     * @ORM\Column(type="float")
      * @Assert\NotBlank()
      * @Serializer\Expose()
      * @Serializer\Since("2.0")

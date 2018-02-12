@@ -14,8 +14,6 @@ use FOS\OAuthServerBundle\Entity\AuthCode as BaseAuthCode;
 class AuthCode extends BaseAuthCode
 {
     /**
-     * @var int
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -23,19 +21,13 @@ class AuthCode extends BaseAuthCode
     protected $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="client", type="string", length=255)
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Client")
      * @ORM\JoinColumn(nullable=false)
      */
     protected $client;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="user", type="string", length=255)
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      */
     protected $user;
 

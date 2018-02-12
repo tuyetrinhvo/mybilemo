@@ -46,7 +46,7 @@ class ProductController extends FOSRestController
      * @Rest\View(StatusCode = 200)
      *
      * @Doc\ApiDoc(
-     *     section="AbstractRepresentation",
+     *     section="Products",
      *     resource=true,
      *     description="Get the list of all products",
      *     statusCodes={
@@ -77,7 +77,7 @@ class ProductController extends FOSRestController
      * )
      * @Rest\View(StatusCode = 200)
      * @Doc\ApiDoc(
-     *     section="AbstractRepresentation",
+     *     section="Products",
      *     resource=true,
      *     description="Get one product",
      *     requirements={
@@ -109,7 +109,7 @@ class ProductController extends FOSRestController
      * @ParamConverter("product", converter="fos_rest.request_body")
      *
      * @Doc\ApiDoc(
-     *     section="AbstractRepresentation",
+     *     section="Products",
      *     resource=true,
      *     description="Create a new product",
      *     requirements={
@@ -155,7 +155,7 @@ class ProductController extends FOSRestController
      * )
      * @ParamConverter("newproduct", converter="fos_rest.request_body")
      * @Doc\ApiDoc(
-     *		section="AbstractRepresentation",
+     *		section="Products",
      *		resource=true,
      *		description="Modify a product",
      *		requirements={
@@ -202,7 +202,7 @@ class ProductController extends FOSRestController
      *     requirements = {"id"="\d+"}
      * )
      * @Doc\ApiDoc(
-     *		section="Product",
+     *		section="Products",
      *		resource=true,
      *		description="Delete a product.",
      *		requirements={
