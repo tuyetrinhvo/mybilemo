@@ -121,5 +121,5 @@ fos_user:
     firewall_name: api
     user_class: AppBundle\Entity\User
     from_email:
-        address: me@mysnowtricks.com
+        address: me@mybilemo.com
         sender_name: me

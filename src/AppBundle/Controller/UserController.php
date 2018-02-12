@@ -10,8 +10,6 @@ use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use AppBundle\Exception\ResourceValidationException;
 use Nelmio\ApiDocBundle\Annotation as Doc;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 
@@ -146,11 +144,7 @@ class UserController extends FOSRestController
         $em->persist($user);
         $em->flush();
 
-        return $this->view(
-            $user,
-            Response::HTTP_CREATED,
-            ['Location' => $this->generateUrl('api_user_show', ['id' => $user->getId(), UrlGeneratorInterface::ABSOLUTE_URL])]
-        );
+        return $user;
 
      }
 
