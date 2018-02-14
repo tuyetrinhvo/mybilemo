@@ -85,7 +85,7 @@ class ProductController extends FOSRestController
      *              "name"="id",
      *              "dataType"="integer",
      *              "requirements"="\d+",
-     *              "description"="The product unique identifier."
+     *              "description"="The product unique identifier"
      *          }
      *      },
      *     statusCodes={
@@ -116,8 +116,7 @@ class ProductController extends FOSRestController
      * 			{
      *				"name"="array",
      *				"dataType"="Json",
-     *				"requirement"="\d+",
-     *              "description"="The product unique identifier. Show how to create a produce."
+     *              "description"="To create a new product, on Postman make POST with path = '/products' with these datas: 'name' = 'name of product', 'description' = 'description', 'brand' = 'brand', 'price' = 'price'"
      * 			}
      *		},
      *      statusCodes={
@@ -163,7 +162,7 @@ class ProductController extends FOSRestController
      *				"name"="id",
      *				"dataType"="integer",
      *				"requirement"="\d+",
-     *				"description"="The product unique identifier. Show how to update a product"
+     *				"description"="The product unique identifier"
      * 			}
      *		},
      *      statusCodes={
@@ -204,13 +203,13 @@ class ProductController extends FOSRestController
      * @Doc\ApiDoc(
      *		section="Products",
      *		resource=true,
-     *		description="Delete a product.",
+     *		description="Delete a product",
      *		requirements={
      * 			{
      *				"name"="id",
      *				"dataType"="integer",
      *				"requirement"="\d+",
-     *				"description"="The product unique identifier."
+     *				"description"="The product unique identifier"
      * 			}
      *		},
      *      statusCodes={
