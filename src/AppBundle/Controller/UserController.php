@@ -7,13 +7,10 @@ use AppBundle\Representation\UserRepresentation;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\View\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use AppBundle\Exception\ResourceValidationException;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 
@@ -22,8 +19,7 @@ class UserController extends FOSRestController
     /**
      * @Rest\Get(
      *     path = "/users",
-     *     name = "app_user_list"
-     * )
+     *     name = "app_user_list")
      *
      * @Rest\QueryParam(
      *     name="order",
@@ -114,7 +110,7 @@ class UserController extends FOSRestController
      *    name = "app_user_create"
      * )
      * @Rest\View(StatusCode = 201)
-     *
+     * @ParamConverter("user", converter="fos_rest.request_body")
      * @Doc\ApiDoc(
      *		section = "Users",
      *		resource = true,
@@ -126,39 +122,28 @@ class UserController extends FOSRestController
      *     }
      * )
      */
-    public function createUserAction(Request $request)
+    public function createUserAction(User $user, ConstraintViolationList $violations)
     {
-        $userManager = $this->get('fos_user.user_manager');
+        if (count($violations)) {
+                $message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
+                foreach ($violations as $violation) {
+                    $message .= sprintf("Field %s: %s ", $violation->getPropertyPath(), $violation->getMessage());
+                }
 
-        $email = $request->request->get('email');
-        $username = $request->request->get('username');
-        $password = $request->request->get('password');
+                throw new ResourceValidationException($message);
+            }
 
-        if(empty($email) || empty($username) || empty($password)){
-            return View::create(['message' => 'Bad request'], Response::HTTP_BAD_REQUEST);
-        }
-
-        $email_exist = $userManager->findUserByEmail($email);
-        $username_exist = $userManager->findUserByUsername($username);
-        if($email_exist || $username_exist){
-            $response = new JsonResponse();
-            $response->setData("Username/Email ".$username."/".$email." already exists");
-            return $response;
-        }
-
-        $user = $userManager->createUser();
-        $user->setUsername($username);
-        $user->setEmail($email);
+        $password = $this->get('security.password_encoder')->encodePassword($user, $user->getPassword());
+        $user->setPassword($password);
         $user->setEnabled(true);
-        $user->setPlainPassword($password);
-        $userManager->updateUser($user, true);
+        $user->setRoles(['ROLE_ADMIN']);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
 
-        $response = new JsonResponse();
-        $response->setData("User: ".$user->getUsername()." was created");
-        return $response;
-    }
+        return $user;
 
-
+     }
 
 
     /**
@@ -178,8 +163,7 @@ class UserController extends FOSRestController
      * 			{
      *				"name"="id",
      *				"dataType"="integer",
-     *				"requirement"="\d+",
-     *				"description"="The user unique identifier. Show how to create a user to know the keys what you can change"
+     *				"requirement"="\d+"
      * 			}
      *		},
      *      statusCodes={
@@ -225,8 +209,7 @@ class UserController extends FOSRestController
      * 			{
      *				"name"="id",
      *				"dataType"="integer",
-     *				"requirement"="\d+",
-     *				"description"="The user unique identifier."
+     *				"requirement"="\d+"
      * 			}
      *		},
      *      statusCodes={
