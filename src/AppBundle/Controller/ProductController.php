@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Produit;
+use AppBundle\Entity\Product;
 use AppBundle\Exception\ResourceValidationException;
-use AppBundle\Representation\Products;
+use AppBundle\Representation\ProductRepresentation;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Nelmio\ApiDocBundle\Annotation as Doc;
@@ -15,7 +15,10 @@ use Symfony\Component\Validator\ConstraintViolationList;
 class ProductController extends FOSRestController
 {
     /**
-     * @Rest\Get("/produits", name="app_product_list")
+     * @Rest\Get(
+     *     path = "/products",
+     *     name="app_product_list"
+     * )
      * @Rest\QueryParam(
      *     name="keyword",
      *     requirements="[a-zA-Z0-9]",
@@ -40,12 +43,17 @@ class ProductController extends FOSRestController
      *     default="0",
      *     description="The pagination offset"
      * )
-     * @Rest\View()
+     * @Rest\View(StatusCode = 200)
      *
      * @Doc\ApiDoc(
      *     section="Products",
      *     resource=true,
-     *     description="Get the list of all products"
+     *     description="Get the list of all products",
+     *     statusCodes={
+     *         200="Returned when request is successful",
+     *         401="Returned when the product is not authorized",
+     *         404="Returned when request content is not found"
+     *     }
      * )
      */
     public function listAction(ParamFetcherInterface $paramFetcher)
@@ -57,8 +65,9 @@ class ProductController extends FOSRestController
             $paramFetcher->get('offset')
         );
 
-        return new Products($pager);
-    }
+        return new ProductRepresentation($pager);
+        }
+
 
     /**
      * @Rest\Get(
@@ -66,19 +75,24 @@ class ProductController extends FOSRestController
      *     name = "app_product_show",
      *     requirements = {"id"="\d+"}
      * )
-     * @Rest\View
+     * @Rest\View(StatusCode = 200)
      * @Doc\ApiDoc(
      *     section="Products",
      *     resource=true,
      *     description="Get one product",
      *     requirements={
-     *     {
-     *        "name"="id",
-     *        "dataType"="integer",
-     *        "requirements"="\d+",
-     *        "description"="The product unique identifier."
-     *     }
-     *   }
+     *          {
+     *              "name"="id",
+     *              "dataType"="integer",
+     *              "requirements"="\d+",
+     *              "description"="The product unique identifier."
+     *          }
+     *      },
+     *     statusCodes={
+     *         200="Returned when request is successful",
+     *         401="Returned when the product is not authorized",
+     *         404="Returned when request content is not found"
+     *      }
      * )
      */
     public function showAction(Product $product)
@@ -87,17 +101,29 @@ class ProductController extends FOSRestController
     }
 
     /**
-     * @Rest\Post("/products")
+     * @Rest\Post(
+     *     path = "/products",
+     *     name = "app_product_create"
+     * )
      * @Rest\View(StatusCode = 201)
      * @ParamConverter("product", converter="fos_rest.request_body")
      *
      * @Doc\ApiDoc(
      *     section="Products",
      *     resource=true,
-     *     description="Create an product",
-     *     statusCodes={
-     *        201="Returned when created",
-     *        400="Returned when a violation is raised by validation"
+     *     description="Create a new product",
+     *     requirements={
+     * 			{
+     *				"name"="array",
+     *				"dataType"="Json",
+     *				"requirement"="\d+",
+     *              "description"="The product unique identifier. Show how to create a produce."
+     * 			}
+     *		},
+     *      statusCodes={
+     *         201="Returned when created",
+     *         401="Returned when the product is not authorized",
+     *         404="Returned when request content is not found"
      *     }
      * )
      */
@@ -121,13 +147,31 @@ class ProductController extends FOSRestController
     }
 
     /**
-     * @Rest\View(StatusCode = 200)
+     * @Rest\View(StatusCode = 201)
      * @Rest\Put(
      *     path = "/products/{id}",
      *     name = "app_product_update",
      *     requirements = {"id"="\d+"}
      * )
      * @ParamConverter("newproduct", converter="fos_rest.request_body")
+     * @Doc\ApiDoc(
+     *		section="Products",
+     *		resource=true,
+     *		description="Modify a product",
+     *		requirements={
+     * 			{
+     *				"name"="id",
+     *				"dataType"="integer",
+     *				"requirement"="\d+",
+     *				"description"="The product unique identifier. Show how to update a product"
+     * 			}
+     *		},
+     *      statusCodes={
+     *         201="Returned when modified",
+     *         401="Returned when the product is not authorized",
+     *         404="Returned when request content is not found"
+     *     }
+     * )
      */
     public function updateAction(Product $product, Product $newproduct, ConstraintViolationList $violations)
     {
@@ -140,8 +184,10 @@ class ProductController extends FOSRestController
             throw new ResourceValidationException($message);
         }
 
-        $product->setTitle($newproduct->getTitle());
-        $product->setContent($newproduct->getContent());
+        $product->setName($newproduct->getName());
+        $product->setDescription($newproduct->getDescription());
+        $product->setBrand($newproduct->getBrand());
+        $product->setPrice($newproduct->getPrice());
 
         $this->getDoctrine()->getManager()->flush();
 
@@ -155,10 +201,30 @@ class ProductController extends FOSRestController
      *     name = "app_product_delete",
      *     requirements = {"id"="\d+"}
      * )
+     * @Doc\ApiDoc(
+     *		section="Products",
+     *		resource=true,
+     *		description="Delete a product.",
+     *		requirements={
+     * 			{
+     *				"name"="id",
+     *				"dataType"="integer",
+     *				"requirement"="\d+",
+     *				"description"="The product unique identifier."
+     * 			}
+     *		},
+     *      statusCodes={
+     *         204="Returned when deleted",
+     *         401="Returned when the product is not authorized",
+     *         404="Returned when request content is not found"
+     *     }
+     * )
      */
     public function deleteAction(Product $product)
     {
-        $this->getDoctrine()->getManager()->remove($product);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($product);
+        $em->flush();
 
         return;
     }

@@ -37,8 +37,6 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
-    form_themes:
-        - 'bootstrap_3_layout.html.twig'
 
 # Doctrine Configuration
 doctrine:
@@ -50,12 +48,6 @@ doctrine:
         user: '%database_user%'
         password: '%database_password%'
         charset: UTF8
-        # if using pdo_sqlite as your database driver:
-        #   1. add the path in parameters.yml
-        #     e.g. database_path: "%kernel.project_dir%/var/data/data.sqlite"
-        #   2. Uncomment database_path in parameters.yml.dist
-        #   3. Uncomment next line:
-        #path: '%database_path%'
 
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
@@ -69,21 +61,6 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
-
-assetic:
-   debug:             '%kernel.debug%'
-   use_controller:    '%kernel.debug%'
-   filters:
-       cssrewrite: ~
-       jsqueeze: ~
-       scssphp:
-         formatter: 'Leafo\ScssPhp\Formatter\Compressed'
-
-stof_doctrine_extensions:
-    orm:
-        default:
-            sluggable:    true
-
 
 fos_rest:
     param_fetcher_listener: force
@@ -114,10 +91,28 @@ fos_rest:
                     enabled: true
                     regex: '/(v|version)=(?P<version>[0-9\.]+)/'
 
-csa_guzzle:
-    clients:
-        weather:
-            config:
-                base_uri:
-
 nelmio_api_doc: ~
+
+fos_oauth_server:
+    db_driver: orm       # Drivers available: orm, mongodb, or propel
+    client_class:        AppBundle\Entity\Client
+    access_token_class:  AppBundle\Entity\AccessToken
+    refresh_token_class: AppBundle\Entity\RefreshToken
+    auth_code_class:     AppBundle\Entity\AuthCode
+    service:
+        user_provider: fos_user.user_provider.username
+
+fos_user:
+    db_driver: orm # le type BDD à utiliser, on utilise l'ORM Doctrine
+    firewall_name: api
+    user_class: AppBundle\Entity\User
+    from_email:
+        address: me@mybilemo.com
+        sender_name: me
+
+jms_serializer:
+    metadata:
+        directories:
+            FOSUserBundle:
+                namespace_prefix: "FOS\\UserBundle"
+                path: "%kernel.root_dir%/Resources/serializer/FOS"
