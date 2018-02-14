@@ -2,10 +2,10 @@
 
 ## Create an API with Symfony.
 
------------------
+
 # Installation
 
-### Use the command :
+## Use the command :
 
 php bin/console doctrine:database:create
 
@@ -18,14 +18,14 @@ php bin/console fos:user:create
 php bin/console create:new:client
 
 php bin/console server:run
-(You will see Server listening on http://127.0.0.1:8000)
+(You will see Server listening on 'http://127.0.0.1:8000')
 
 -------------------
-### Test with Postman :
+## Test with Postman :
 
-#### Get New Access token in Postman :
+### Get New Access token in Postman :
 
-##### Make a request POST with http://127.0.0.1:8000/oauth/v2/token
+####  Make a request POST with 'http://127.0.0.1:8000/oauth/v2/token'
 
 On the 'body tab', check 'raw', 'JSON' and inquire:
 
@@ -38,17 +38,19 @@ On the 'body tab', check 'raw', 'JSON' and inquire:
     }
 
 You will receive an access token and a refresh token.
+
 Your access token expires after one hour !
 
-#### Connect to the Api with this access token
+--------------
+### Connect to the Api with this access token
 
-##### Get products's list : Make the request GET with http://127.0.0.1:8000/products
+#### 1.Get products's list : Make the request GET with 'http://127.0.0.1:8000/products'
 
 On the 'authorization', choose 'Bearer token', and copy-paste the access token.
 
-##### Show a product : Make the request GET with http://127.0.0.1:8000/products/{id}
+#### 2.Show a product : Make the request GET with 'http://127.0.0.1:8000/products/{id}'
 
-##### Create a new user : Make the request POST with http://127.0.0.1:8000/users
+#### 3. Create a new user : Make the request POST with 'http://127.0.0.1:8000/users'
 On the 'body tab', check 'raw', 'JSON' and inquire:
 
     {
@@ -57,15 +59,16 @@ On the 'body tab', check 'raw', 'JSON' and inquire:
        "password": "YourPassword"
     }
 
-##### Get user's list : Make the request GET with http://127.0.0.1:8000/users
+#### 4.Get user's list : Make the request GET with 'http://127.0.0.1:8000/users'
 
-##### Show a user : Make the request GET with http://127.0.0.1:8000/users/{id}
+#### 5.Show a user : Make the request GET with 'http://127.0.0.1:8000/users/{id}'
 
-##### Delete a user : Make the request DELETE with http://127.0.0.1:8000/users/{id}
+#### 6.Delete a user : Make the request DELETE with 'http://127.0.0.1:8000/users/{id}'
 
-#### Use the refresh token
+------------------
+### Use the refresh token
 
-##### Make a request POST with http://127.0.0.1:8000/oauth/v2/token
+#### Make a request POST with 'http://127.0.0.1:8000/oauth/v2/token'
 
 On the 'body tab', check 'raw', 'JSON' and inquire:
 
@@ -80,7 +83,7 @@ On the 'body tab', check 'raw', 'JSON' and inquire:
 
 # Documentation
 
-#### You will find the documentation at http://127.0.0.1:8000/api/doc
+#### You will find the documentation at 'http://127.0.0.1:8000/api/doc'
 
 --------------
 
