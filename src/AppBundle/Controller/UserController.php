@@ -4,13 +4,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Representation\UserRepresentation;
+use AppBundle\Service\ClientManager;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use AppBundle\Exception\ResourceValidationException;
 use Nelmio\ApiDocBundle\Annotation as Doc;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 
@@ -50,7 +50,7 @@ class UserController extends FOSRestController
      * @Doc\ApiDoc(
      *		section = "Users",
      *		resource = true,
-     *		description = "Get all users registered.",
+     *		description = "Get all users registered",
      *      statusCodes={
      *         200="Returned when request is successful",
      *         401="Returned when the user is not authorized",
@@ -81,15 +81,15 @@ class UserController extends FOSRestController
      * @Rest\View(StatusCode = 200)
      *
      * @Doc\ApiDoc(
-     * 		section = "User",
+     * 		section = "Users",
      * 		resource = true,
-     *		description = "Get one user.",
+     *		description = "Get one user",
      *		requirements={
      * 			{
      *				"name"="id",
      *				"dataType"="integer",
      *				"requirement"="\d+",
-     *				"description"="The user unique identifier."
+     *				"description"="To show a user, on Postman make GET with path = '/users/{id}' "
      * 			}
      *		},
      *      statusCodes={
@@ -114,7 +114,14 @@ class UserController extends FOSRestController
      * @Doc\ApiDoc(
      *		section = "Users",
      *		resource = true,
-     *		description = "Add a new user.",
+     *		description = "Add a new user",
+     *      requirements={
+     * 			{
+     *				"name"="array",
+     *				"dataType"="Json",
+     *              "description"= "To create a new user, on Postman make POST with path = '/users' with these datas: 'username' = 'your username', 'email' = 'your email', 'password' = 'your password' "
+     * 			}
+     *		},
      *      statusCodes={
      *         201="Returned when created",
      *         400="Returned when a violation is raised by validation",
@@ -137,11 +144,20 @@ class UserController extends FOSRestController
         $user->setPassword($password);
         $user->setEnabled(true);
         $user->setRoles(['ROLE_ADMIN']);
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
 
-        return $user;
+        $client = $this->get(ClientManager::class)->createClient($this->getParameter('redirect_uri'));
+
+        return[
+            'user' => $user,
+            'client' =>[
+                    'client_id' => $client->getPublicId(),
+                    'client_secret' => $client->getSecret()
+            ]
+        ];
 
      }
 
@@ -158,14 +174,15 @@ class UserController extends FOSRestController
      * @Doc\ApiDoc(
      *		section="Users",
      *		resource=true,
-     *		description="Modify a user.",
+     *		description="Modify a user",
      *		requirements={
      * 			{
-     *				"name"="id",
-     *				"dataType"="integer",
-     *				"requirement"="\d+"
+     *				"name"="array",
+     *				"dataType"="Json",
+     *              "description"= "To modify a user, on Postman make PUT with path = '/users/{id}' with these datas: 'username' = 'your new username', or 'email' = 'your new email', or 'password' = 'your new password' "
      * 			}
      *		},
+     *
      *      statusCodes={
      *         201="Returned when modified",
      *         401="Returned when the user is not authorized",
@@ -205,12 +222,13 @@ class UserController extends FOSRestController
      * @Doc\ApiDoc(
      *		section="Users",
      *		resource=true,
-     *		description="Delete a user.",
+     *		description="Delete a user",
      *		requirements={
      * 			{
      *				"name"="id",
      *				"dataType"="integer",
-     *				"requirement"="\d+"
+     *				"requirement"="\d+",
+     *              "description"= "To delete a user, on Postman make DELETE with path = '/users/{id}' "
      * 			}
      *		},
      *      statusCodes={
