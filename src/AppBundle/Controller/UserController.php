@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Representation\UserRepresentation;
+use AppBundle\Service\ClientManager;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -137,11 +138,22 @@ class UserController extends FOSRestController
         $user->setPassword($password);
         $user->setEnabled(true);
         $user->setRoles(['ROLE_ADMIN']);
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
 
-        return $user;
+        $client = $this->get(ClientManager::class)->createClient($this->getParameter('redirect_uri'));
+
+        return[
+            'user' => $user,
+            '_embedded' => [
+                'client' =>[
+                    'client_id' => $client->getPublicId(),
+                    'client_secret' => $client->getSecret()
+                ]
+            ]
+        ];
 
      }
 

@@ -12,7 +12,7 @@ class CreateClientCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('create-new-client')
+            ->setName('create:new:client')
             ->setDescription('Create a new client')
         ;
     }
@@ -20,8 +20,8 @@ class CreateClientCommand extends ContainerAwareCommand
     {
         $clientManager = $this->getApplication()->getKernel()->getContainer()->get('fos_oauth_server.client_manager.default');
         $client = $clientManager->createClient();
-        $client->setRedirectUris(array($this->getContainer()->get('kernel')->getRootDir()));
-        $client->setAllowedGrantTypes(array('password', 'refresh_token'));
+        $client->setRedirectUris([$this->getContainer()->get('kernel')->getRootDir()]);
+        $client->setAllowedGrantTypes(['password', 'refresh_token']);
         $clientManager->updateClient($client);
 
         $output->writeln('Your BileMo API access code : ');
