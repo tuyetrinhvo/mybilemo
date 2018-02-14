@@ -13,7 +13,7 @@ use JMS\Serializer\Annotation as Serializer;
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
- * @Serializer\ExclusionPolicy("all")
+ * @Serializer\ExclusionPolicy("ALL")
  *
  * @Hateoas\Relation(
  *      "list user",
@@ -64,27 +64,6 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
-    /**
-     * @Assert\NotBlank()
-     * @Serializer\Expose()
-     * @Serializer\Since("1.0")
-     */
-    protected $username;
-
-    /**
-     * @Assert\NotBlank()
-     * @Serializer\Expose()
-     * @Serializer\Since("1.0")
-     */
-    protected $password;
-
-    /**
-     * @Assert\NotBlank()
-     * @Serializer\Expose()
-     * @Serializer\Since("1.0")
-     */
-    protected $email;
 
 }
 
