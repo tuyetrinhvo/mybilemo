@@ -50,8 +50,6 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Serializer\Expose()
-     *
      */
     private $id;
 

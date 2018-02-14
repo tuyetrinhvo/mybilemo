@@ -9,12 +9,12 @@ class ProductRepository extends AbstractRepository
         $qb = $this
             ->createQueryBuilder('p')
             ->select('p')
-            ->orderBy('p.name', $order)
+            ->orderBy('p.id', $order)
         ;
 
         if ($term) {
             $qb
-                ->where('p.name LIKE ?1')
+                ->where('p.id LIKE ?1')
                 ->setParameter(1, '%'.$term.'%')
             ;
         }

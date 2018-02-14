@@ -185,7 +185,8 @@ class UserController extends FOSRestController
         }
 
         $user->setUsername($newUser->getUsername());
-        $user->setPlainPassword($newUser->getPlainPassword());
+        $password = $this->get('security.password_encoder')->encodePassword($newUser, $newUser->getPassword());
+        $user->setPassword($password);
         $user->setEmail($newUser->getEmail());
 
         $this->getDoctrine()->getManager()->flush();
