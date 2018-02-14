@@ -7,9 +7,13 @@ use AppBundle\Representation\UserRepresentation;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\View\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use AppBundle\Exception\ResourceValidationException;
 use Nelmio\ApiDocBundle\Annotation as Doc;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 
@@ -18,7 +22,8 @@ class UserController extends FOSRestController
     /**
      * @Rest\Get(
      *     path = "/users",
-     *     name = "app_user_list")
+     *     name = "app_user_list"
+     * )
      *
      * @Rest\QueryParam(
      *     name="order",
@@ -109,18 +114,11 @@ class UserController extends FOSRestController
      *    name = "app_user_create"
      * )
      * @Rest\View(StatusCode = 201)
-     * @ParamConverter("user", converter="fos_rest.request_body")
+     *
      * @Doc\ApiDoc(
      *		section = "Users",
      *		resource = true,
      *		description = "Add a new user.",
-     *      requirements={
-     * 			{
-     *				"name"="array",
-     *				"dataType"="Json",
-     *              "description"= "To create a new user, make an array with these datas: 'username' = null, 'facebook_id' = null, 'email' = 'user_facebook_account_email', 'gender' = null"
-     * 			}
-     *		},
      *      statusCodes={
      *         201="Returned when created",
      *         400="Returned when a violation is raised by validation",
@@ -128,25 +126,39 @@ class UserController extends FOSRestController
      *     }
      * )
      */
-    public function createUserAction(User $user, ConstraintViolationList $violations)
+    public function createUserAction(Request $request)
     {
-        if (count($violations)) {
-                $message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
-                foreach ($violations as $violation) {
-                    $message .= sprintf("Field %s: %s ", $violation->getPropertyPath(), $violation->getMessage());
-                }
+        $userManager = $this->get('fos_user.user_manager');
 
-                throw new ResourceValidationException($message);
-            }
+        $email = $request->request->get('email');
+        $username = $request->request->get('username');
+        $password = $request->request->get('password');
+
+        if(empty($email) || empty($username) || empty($password)){
+            return View::create(['message' => 'Bad request'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $email_exist = $userManager->findUserByEmail($email);
+        $username_exist = $userManager->findUserByUsername($username);
+        if($email_exist || $username_exist){
+            $response = new JsonResponse();
+            $response->setData("Username/Email ".$username."/".$email." already exists");
+            return $response;
+        }
+
+        $user = $userManager->createUser();
+        $user->setUsername($username);
+        $user->setEmail($email);
+        $user->setEnabled(true);
+        $user->setPlainPassword($password);
+        $userManager->updateUser($user, true);
+
+        $response = new JsonResponse();
+        $response->setData("User: ".$user->getUsername()." was created");
+        return $response;
+    }
 
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
-
-        return $user;
-
-     }
 
 
     /**
