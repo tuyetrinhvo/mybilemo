@@ -102,6 +102,8 @@ fos_oauth_server:
     auth_code_class:     AppBundle\Entity\AuthCode
     service:
         user_provider: fos_user.user_provider.username
+        #options:
+            #access_token_lifetime: 36000
 
 fos_user:
     db_driver: orm # le type BDD à utiliser, on utilise l'ORM Doctrine
