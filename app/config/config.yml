@@ -38,11 +38,13 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    form_themes: ['bootstrap_3_layout.html.twig']
 
 # Doctrine Configuration
 doctrine:
     dbal:
         driver: pdo_mysql
+        server_version: 5.7.14
         host: '%database_host%'
         port: '%database_port%'
         dbname: '%database_name%'

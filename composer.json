@@ -2,9 +2,10 @@
     "name": "trinhvo/mybilemo",
     "license": "proprietary",
     "type": "project",
+    "description": "create an api",
     "autoload": {
         "psr-4": {
-            "": "src/"
+            "AppBundle\\": "src/AppBundle"
         },
         "classmap": [
             "app/AppKernel.php",
@@ -14,10 +15,7 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        },
-        "files": [
-            "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php"
-        ]
+        }
     },
 
     "require": {
