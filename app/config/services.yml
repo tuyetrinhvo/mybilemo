@@ -13,7 +13,3 @@ services:
         tags:
             - { name: app.normalizer }
 
-    AppBundle\Service\ClientManager:
-        arguments:
-            $clientManager: '@fos_oauth_server.client_manager.default'
-        public: true

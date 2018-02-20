@@ -13,29 +13,36 @@ use Hateoas\Configuration\Annotation as Hateoas;
  * @Serializer\ExclusionPolicy("all")
  *
  * @Hateoas\Relation(
- *     "self",
- *     href = @Hateoas\Route("app_product_show",
- *     parameters = { "id" = "expr(object.getId())" },
- *     absolute = true
+ *      "list product",
+ *      href = @Hateoas\Route("app_product_list",
+ *      absolute = true
  *     )
  * )
+ *
  * @Hateoas\Relation(
- *     "create",
- *     href = @Hateoas\Route("app_product_create",
+ *     "show a product",
+ *     href = @Hateoas\Route("app_product_show",
  *     parameters = { "id" = "expr(object.getId())" },
  *     absolute = true
  *     )
  * )
  *
  * @Hateoas\Relation(
- *     "modify",
+ *     "create product",
+ *     href = @Hateoas\Route("app_product_create",
+ *     absolute = true
+ *     )
+ * )
+ *
+ * @Hateoas\Relation(
+ *     "modify product",
  *     href = @Hateoas\Route("app_product_update",
  *     parameters = { "id" = "expr(object.getId())" },
  *     absolute = true
  *     )
  * )
  * @Hateoas\Relation(
- *     "delete",
+ *     "delete product",
  *     href = @Hateoas\Route("app_product_delete",
  *     parameters = { "id" = "expr(object.getId())" },
  *     absolute = true

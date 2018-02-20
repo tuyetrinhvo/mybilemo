@@ -21,7 +21,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
  * )
  *
  * @Hateoas\Relation(
- *      "show user",
+ *      "show a user",
  *      href = @Hateoas\Route("app_user_show",
  *          parameters = { "id" = "expr(object.getId())" },
  *          absolute = true
@@ -31,7 +31,6 @@ use Hateoas\Configuration\Annotation as Hateoas;
  * @Hateoas\Relation(
  *     "create user",
  *     href = @Hateoas\Route("app_user_create",
- *     parameters = { "id" = "expr(object.getId())" },
  *     absolute = true
  *     )
  * )

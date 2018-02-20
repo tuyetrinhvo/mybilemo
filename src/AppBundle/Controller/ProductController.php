@@ -49,6 +49,13 @@ class ProductController extends FOSRestController
      *     section="Products",
      *     resource=true,
      *     description="Get the list of all products",
+     *     headers={
+     *         {
+     *             "name"="Authorization",
+     *             "description"="Bearer Token",
+     *             "required"="true"
+     *         }
+     *     },
      *     statusCodes={
      *         200="Returned when request is successful",
      *         401="Returned when the product is not authorized",
@@ -84,10 +91,17 @@ class ProductController extends FOSRestController
      *          {
      *              "name"="id",
      *              "dataType"="integer",
-     *              "requirements"="\d+",
-     *              "description"="The product unique identifier"
+     *              "requirement"="\d+",
+     *              "description"="The product unique identifier. To show a product, on Postman make GET with path = '/products/{id}'"
      *          }
      *      },
+     *      headers={
+     *         {
+     *             "name"="Authorization",
+     *             "description"="Bearer Token",
+     *             "required"="true"
+     *         }
+     *     },
      *     statusCodes={
      *         200="Returned when request is successful",
      *         401="Returned when the product is not authorized",
@@ -115,14 +129,28 @@ class ProductController extends FOSRestController
      *     requirements={
      * 			{
      *				"name"="array",
-     *				"dataType"="Json",
-     *              "description"="To create a new product, on Postman make POST with path = '/products' with these datas: 'name' = 'name of product', 'description' = 'description', 'brand' = 'brand', 'price' = 'price'"
+     *				"dataType"="string",
+     *              "requirement"="application/json",
+     *              "description"="To create a new product, on Postman make POST with path = '/products' with these datas: 'name', 'description', 'brand', and 'price' "
      * 			}
      *		},
+     *      headers={
+     *         {
+     *             "name"="Authorization",
+     *             "description"="Bearer Token",
+     *             "required"="true"
+     *         }
+     *     },
      *      statusCodes={
      *         201="Returned when created",
      *         401="Returned when the product is not authorized",
      *         404="Returned when request content is not found"
+     *     },
+     *     parameters={
+     *          {"name"="name", "dataType"="string", "required"=true, "description"="name of product"},
+     *          {"name"="description", "dataType"="string", "required"=true, "description"="description of product"},
+     *          {"name"="brand", "dataType"="string", "required"=true, "description"="brand of product"},
+     *          {"name"="price", "dataType"="string", "required"=true, "description"="price of product"}
      *     }
      * )
      */
@@ -159,16 +187,35 @@ class ProductController extends FOSRestController
      *		description="Modify a product",
      *		requirements={
      * 			{
+     *				"name"="array",
+     *				"dataType"="string",
+     *              "requirement"="application/json",
+     *              "description"="To modify a product, on Postman make POST with path = '/products/{id}' with these datas: 'name', 'description', 'brand', and 'price' "
+     * 			},
+     *          {
      *				"name"="id",
      *				"dataType"="integer",
      *				"requirement"="\d+",
      *				"description"="The product unique identifier"
      * 			}
      *		},
+     *      headers={
+     *         {
+     *             "name"="Authorization",
+     *             "description"="Bearer Token",
+     *             "required"="true"
+     *         }
+     *     },
      *      statusCodes={
      *         201="Returned when modified",
      *         401="Returned when the product is not authorized",
      *         404="Returned when request content is not found"
+     *     },
+     *     parameters={
+     *          {"name"="name", "dataType"="string", "required"=true, "description"="new name of product"},
+     *          {"name"="description", "dataType"="string", "required"=true, "description"="new description of product"},
+     *          {"name"="brand", "dataType"="string", "required"=true, "description"="new brand of product"},
+     *          {"name"="price", "dataType"="string", "required"=true, "description"="new price of product"}
      *     }
      * )
      */
@@ -212,6 +259,13 @@ class ProductController extends FOSRestController
      *				"description"="The product unique identifier"
      * 			}
      *		},
+     *      headers={
+     *         {
+     *             "name"="Authorization",
+     *             "description"="Bearer Token",
+     *             "required"="true"
+     *         }
+     *     },
      *      statusCodes={
      *         204="Returned when deleted",
      *         401="Returned when the product is not authorized",

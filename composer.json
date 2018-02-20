@@ -39,13 +39,13 @@
         "friendsofsymfony/user-bundle": "~2.0",
         "white-october/pagerfanta-bundle": "^1.0",
         "willdurand/hateoas-bundle": "^1.2",
-        "nelmio/api-doc-bundle": "^2.13"
+        "nelmio/api-doc-bundle": "^2.13",
+        "phpunit/phpunit": "5.7.*"
     },
 
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0",
-        "phpunit/phpunit": "5.7.*"
+        "symfony/phpunit-bridge": "^3.0"
     },
 
     "scripts": {

@@ -18,13 +18,12 @@ class CreateClientCommand extends ContainerAwareCommand
     }
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $clientManager = $this->getApplication()->getKernel()->getContainer()->get('fos_oauth_server.client_manager.default');
+        $clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
         $client = $clientManager->createClient();
         $client->setRedirectUris([$this->getContainer()->get('kernel')->getRootDir()]);
         $client->setAllowedGrantTypes(['password', 'refresh_token']);
         $clientManager->updateClient($client);
 
-        $output->writeln('Your BileMo API access code : ');
         $output->writeln('Your client_id : ' . $client->getPublicId());
         $output->writeln('Your client_secret : ' . $client->getSecret());
     }

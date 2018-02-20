@@ -51,6 +51,13 @@ class UserController extends FOSRestController
      *		section = "Users",
      *		resource = true,
      *		description = "Get all users registered",
+     *      headers={
+     *         {
+     *             "name"="Authorization",
+     *             "description"="Bearer Token",
+     *             "required"="true"
+     *         }
+     *     },
      *      statusCodes={
      *         200="Returned when request is successful",
      *         401="Returned when the user is not authorized",
@@ -92,6 +99,13 @@ class UserController extends FOSRestController
      *				"description"="To show a user, on Postman make GET with path = '/users/{id}' "
      * 			}
      *		},
+     *      headers={
+     *         {
+     *             "name"="Authorization",
+     *             "description"="Bearer Token",
+     *             "required"="true"
+     *         }
+     *     },
      *      statusCodes={
      *         200="Returned when request is successful",
      *         401="Returned when the user is not authorized",
@@ -118,14 +132,27 @@ class UserController extends FOSRestController
      *      requirements={
      * 			{
      *				"name"="array",
-     *				"dataType"="Json",
-     *              "description"= "To create a new user, on Postman make POST with path = '/users' with these datas: 'username' = 'your username', 'email' = 'your email', 'password' = 'your password' "
+     *				"dataType"="string",
+     *              "requirement"="application/json",
+     *              "description"= "To create a new user, on Postman make POST with path = '/users' with these datas: 'username', 'email', and 'password' "
      * 			}
      *		},
+     *     headers={
+     *         {
+     *             "name"="Authorization",
+     *             "description"="Bearer Token",
+     *             "required"="true"
+     *         }
+     *     },
      *      statusCodes={
      *         201="Returned when created",
      *         400="Returned when a violation is raised by validation",
      *         401="Returned when the user is not authorized"
+     *     },
+     *     parameters={
+     *          {"name"="username", "dataType"="string", "required"=true, "description"="your username"},
+     *          {"name"="email", "dataType"="string", "required"=true, "description"="your email"},
+     *          {"name"="password", "dataType"="string", "required"=true, "description"="your password"}
      *     }
      * )
      */
@@ -143,21 +170,13 @@ class UserController extends FOSRestController
         $password = $this->get('security.password_encoder')->encodePassword($user, $user->getPassword());
         $user->setPassword($password);
         $user->setEnabled(true);
-        $user->setRoles(['ROLE_ADMIN']);
+        $user->setRoles(['ROLE_SUPER_ADMIN']);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
 
-        $client = $this->get(ClientManager::class)->createClient($this->getParameter('redirect_uri'));
-
-        return[
-            'user' => $user,
-            'client' =>[
-                    'client_id' => $client->getPublicId(),
-                    'client_secret' => $client->getSecret()
-            ]
-        ];
+        return $user;
 
      }
 
@@ -178,15 +197,33 @@ class UserController extends FOSRestController
      *		requirements={
      * 			{
      *				"name"="array",
-     *				"dataType"="Json",
-     *              "description"= "To modify a user, on Postman make PUT with path = '/users/{id}' with these datas: 'username' = 'your new username', or 'email' = 'your new email', or 'password' = 'your new password' "
+     *				"dataType"="string",
+     *              "requirement"="application/json",
+     *              "description"= "To modify a user, on Postman make PUT with path = '/users/{id}' with these datas: 'username', 'email', and 'password' "
+     * 			},
+     *          {
+     *				"name"="id",
+     *				"dataType"="integer",
+     *				"requirement"="\d+",
+     *              "description"= "The user unique identifier "
      * 			}
      *		},
-     *
+     *      headers={
+     *         {
+     *             "name"="Authorization",
+     *             "description"="Bearer Token",
+     *             "required"="true"
+     *         }
+     *     },
      *      statusCodes={
      *         201="Returned when modified",
      *         401="Returned when the user is not authorized",
      *         404="Returned when request content is not found"
+     *     },
+     *     parameters={
+     *          {"name"="username", "dataType"="string", "required"=true, "description"="your new username"},
+     *          {"name"="email", "dataType"="string", "required"=true, "description"="your new email"},
+     *          {"name"="password", "dataType"="string", "required"=true, "description"="your new password"}
      *     }
      * )
      */
@@ -231,6 +268,13 @@ class UserController extends FOSRestController
      *              "description"= "To delete a user, on Postman make DELETE with path = '/users/{id}' "
      * 			}
      *		},
+     *     headers={
+     *         {
+     *             "name"="Authorization",
+     *             "description"="Bearer Token",
+     *             "required"="true"
+     *         }
+     *     },
      *      statusCodes={
      *         204="Returned when deleted",
      *         401="Returned when the user is not authorized",
@@ -244,7 +288,7 @@ class UserController extends FOSRestController
         $em->remove($user);
         $em->flush();
 
-        return;
+        //return;
     }
 
 }
