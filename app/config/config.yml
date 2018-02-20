@@ -11,10 +11,10 @@ parameters:
 
 framework:
     #esi: ~
-    translator: { fallbacks: ['%locale%'] }
-    secret: '%secret%'
+    translator: { fallbacks: ["%locale%"] }
+    secret: "%secret%"
     router:
-        resource: '%kernel.project_dir%/app/config/routing.yml'
+        resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
     form: ~
     csrf_protection: ~
@@ -22,12 +22,13 @@ framework:
     #serializer: { enable_annotations: true }
     templating:
         engines: ['twig']
-    default_locale: '%locale%'
+    default_locale: "%locale%"
     trusted_hosts: ~
     session:
         # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id: session.handler.native_file
-        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+        save_path: "%kernel.project_dir%/var/sessions/%kernel.environment%"
+        name: mybilemo_session
     fragments: ~
     http_method_override: true
     assets: ~
@@ -36,7 +37,7 @@ framework:
 
 # Twig Configuration
 twig:
-    debug: '%kernel.debug%'
+    debug: "%kernel.debug%"
     strict_variables: '%kernel.debug%'
     form_themes: ['bootstrap_3_layout.html.twig']
 
@@ -45,24 +46,24 @@ doctrine:
     dbal:
         driver: pdo_mysql
         server_version: 5.7.14
-        host: '%database_host%'
-        port: '%database_port%'
-        dbname: '%database_name%'
-        user: '%database_user%'
+        host: "%database_host%"
+        port: "%database_port%"
+        dbname: "%database_name%"
+        user: "%database_user%"
         password: '%database_password%'
         charset: UTF8
 
     orm:
-        auto_generate_proxy_classes: '%kernel.debug%'
+        auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: '%mailer_transport%'
-    host: '%mailer_host%'
-    username: '%mailer_user%'
-    password: '%mailer_password%'
+    transport: "%mailer_transport%"
+    host: "%mailer_host%"
+    username: "%mailer_user%"
+    password: "%mailer_password%"
     spool: { type: memory }
 
 fos_rest:
