@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Representation\UserRepresentation;
-use AppBundle\Service\ClientManager;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -45,7 +44,9 @@ class UserController extends FOSRestController
      *     requirements="[a-zA-Z0-9]+",
      *     description="The keyword to search for."
      * )
-     * @Rest\View(StatusCode = 200)
+     * @Rest\View(StatusCode = 200,
+     *     serializerGroups={"list"}
+     * )
      *
      * @Doc\ApiDoc(
      *		section = "Users",
@@ -85,7 +86,9 @@ class UserController extends FOSRestController
      *     name = "app_user_show",
      *     requirements = {"id"="\d+"}
      * )
-     * @Rest\View(StatusCode = 200)
+     * @Rest\View(StatusCode = 200,
+     *     serializerGroups={"show-one"}
+     * )
      *
      * @Doc\ApiDoc(
      * 		section = "Users",
@@ -123,8 +126,12 @@ class UserController extends FOSRestController
      *    path = "/users",
      *    name = "app_user_create"
      * )
-     * @Rest\View(StatusCode = 201)
+     * @Rest\View(StatusCode = 201,
+     *     serializerGroups={"list"}
+     * )
+     *
      * @ParamConverter("user", converter="fos_rest.request_body")
+     *
      * @Doc\ApiDoc(
      *		section = "Users",
      *		resource = true,
@@ -187,7 +194,11 @@ class UserController extends FOSRestController
      *     name = "app_user_update",
      *     requirements = {"id"="\d+"}
      * )
-     * @Rest\View(StatusCode = 201)
+     *
+     * @Rest\View(StatusCode = 201,
+     *     serializerGroups={"list"}
+     * )
+     *
      * @ParamConverter("newUser", converter="fos_rest.request_body")
      *
      * @Doc\ApiDoc(
