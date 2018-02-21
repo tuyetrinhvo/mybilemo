@@ -30,7 +30,7 @@ class UserController extends FOSRestController
      *     name="limit",
      *     requirements="\d+",
      *     default="15",
-     *     description="Max number of movies per page."
+     *     description="Max number of users per page."
      * )
      * @Rest\QueryParam(
      *     name="offset",
