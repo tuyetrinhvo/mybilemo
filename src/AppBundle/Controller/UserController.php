@@ -44,9 +44,7 @@ class UserController extends FOSRestController
      *     requirements="[a-zA-Z0-9]+",
      *     description="The keyword to search for."
      * )
-     * @Rest\View(StatusCode = 200,
-     *     serializerGroups={"list"}
-     * )
+     * @Rest\View(StatusCode = 200)
      *
      * @Doc\ApiDoc(
      *		section = "Users",
@@ -86,9 +84,7 @@ class UserController extends FOSRestController
      *     name = "app_user_show",
      *     requirements = {"id"="\d+"}
      * )
-     * @Rest\View(StatusCode = 200,
-     *     serializerGroups={"show-one"}
-     * )
+     * @Rest\View(StatusCode = 200)
      *
      * @Doc\ApiDoc(
      * 		section = "Users",
@@ -126,12 +122,8 @@ class UserController extends FOSRestController
      *    path = "/users",
      *    name = "app_user_create"
      * )
-     * @Rest\View(StatusCode = 201,
-     *     serializerGroups={"list"}
-     * )
-     *
+     * @Rest\View(StatusCode = 201)
      * @ParamConverter("user", converter="fos_rest.request_body")
-     *
      * @Doc\ApiDoc(
      *		section = "Users",
      *		resource = true,
@@ -194,11 +186,7 @@ class UserController extends FOSRestController
      *     name = "app_user_update",
      *     requirements = {"id"="\d+"}
      * )
-     *
-     * @Rest\View(StatusCode = 201,
-     *     serializerGroups={"list"}
-     * )
-     *
+     * @Rest\View(StatusCode = 201)
      * @ParamConverter("newUser", converter="fos_rest.request_body")
      *
      * @Doc\ApiDoc(

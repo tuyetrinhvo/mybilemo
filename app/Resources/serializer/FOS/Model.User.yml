@@ -1,27 +1,7 @@
 FOS\UserBundle\Model\User:
-    exclusion_policy: none
+    exclusion_policy: ALL
     properties:
-        id:
-            groups: ['list', 'show-one']
         username:
-            groups: ['list', 'show-one']
+            expose: true
         email:
-            groups: ['list', 'show-one']
-        password:
-            groups: ['show-one']
-        username_canonical:
-            groups: ['not-show']
-        email_canonical:
-            groups: ['not-show']
-        enabled:
-            groups: ['show-one']
-        salt:
-            groups: ['not-show']
-        last_login:
-            groups: ['not-show']
-        confirmation_token:
-            groups: ['not-show']
-        password_requested_at:
-            groups: ['not-show']
-        roles:
-            groups: ['show-one']
+            expose: true
