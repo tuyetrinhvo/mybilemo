@@ -31,8 +31,8 @@ security:
             stateless: true
             anonymous: false
 
-        main:
-            logout_on_user_change: true
+        #main:
+            #logout_on_user_change: true
             #anonymous: ~
             # activate different ways to authenticate
 

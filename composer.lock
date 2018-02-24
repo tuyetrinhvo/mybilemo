@@ -4574,16 +4574,16 @@
         },
         {
             "name": "willdurand/hateoas",
-            "version": "2.11.0",
+            "version": "2.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/willdurand/Hateoas.git",
-                "reference": "bc5c1035f7f040f13810fbed9ac87ba540af7758"
+                "reference": "71b1af62b398dc9a870ac0b16c84bdc23a76a5c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/Hateoas/zipball/bc5c1035f7f040f13810fbed9ac87ba540af7758",
-                "reference": "bc5c1035f7f040f13810fbed9ac87ba540af7758",
+                "url": "https://api.github.com/repos/willdurand/Hateoas/zipball/71b1af62b398dc9a870ac0b16c84bdc23a76a5c5",
+                "reference": "71b1af62b398dc9a870ac0b16c84bdc23a76a5c5",
                 "shasum": ""
             },
             "require": {
@@ -4593,14 +4593,14 @@
                 "jms/serializer": "^1.7",
                 "php": "^5.5|^7.0",
                 "phpoption/phpoption": ">=1.1.0,<2.0-dev",
-                "symfony/expression-language": "~2.4 || ~3.0"
+                "symfony/expression-language": "~2.4 || ~3.0 || ~4.0"
             },
             "require-dev": {
                 "pagerfanta/pagerfanta": "~1.0",
-                "phpunit/phpunit": "~4.5",
-                "symfony/dependency-injection": "~2.4 || ~3.0",
-                "symfony/routing": "~2.4 || ~3.0",
-                "symfony/yaml": "~2.4 || ~3.0",
+                "phpunit/phpunit": "~5",
+                "symfony/dependency-injection": "~2.4 || ~3.0 || ~4.0",
+                "symfony/routing": "~2.4 || ~3.0 || ~4.0",
+                "symfony/yaml": "~2.4 || ~3.0 || ~4.0",
                 "twig/twig": "~1.12"
             },
             "suggest": {
@@ -4611,7 +4611,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.11-dev"
+                    "dev-master": "2.12-dev"
                 }
             },
             "autoload": {
@@ -4634,7 +4634,7 @@
                 }
             ],
             "description": "A PHP library to support implementing representations for HATEOAS REST web services",
-            "time": "2017-05-22T10:27:33+00:00"
+            "time": "2018-02-23T17:05:31+00:00"
         },
         {
             "name": "willdurand/hateoas-bundle",
