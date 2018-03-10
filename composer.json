@@ -40,7 +40,8 @@
         "white-october/pagerfanta-bundle": "^1.0",
         "willdurand/hateoas-bundle": "^1.2",
         "nelmio/api-doc-bundle": "^2.13",
-        "phpunit/phpunit": "5.7.*"
+        "phpunit/phpunit": "5.7.*",
+        "blackfire/php-sdk": "^1.11"
     },
 
     "require-dev": {
