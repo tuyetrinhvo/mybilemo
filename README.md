@@ -29,7 +29,7 @@
 
 ### Get New Access token in Postman :
 
-####  Make POST request with '127.0.0.1:8000/oauth/v2/token' 
+####  Make POST request with '127.0.0.1:8000/oauth/v2/token'
 ##### (or 'bilemo.ttvo.fr/oauth/v2/token')
 
 On the 'body tab', check 'raw', 'JSON' and inquire:
@@ -51,15 +51,13 @@ Your access token expires after one hour !
 ### Connect to the Api with this access token
 
 #### 1.Get products's list : Make GET request with '127.0.0.1:8000/products'
-                                               (or 'bilemo.ttvo.fr/products')
 
 ##### On the 'authorization', choose 'Bearer token', and copy-paste the access token.
 
 #### 2.Show a product : Make GET request with '127.0.0.1:8000/products/{id}'
-                                          (or 'bilemo.ttvo.fr/products/{id}')
 
 #### 3.Create a new user : Make POST request with '127.0.0.1:8000/users'
-                                              (or 'bilemo.ttvo.fr/users')
+
 
 ##### On the 'body tab', check 'raw', 'JSON' and inquire:
 
@@ -70,13 +68,10 @@ Your access token expires after one hour !
     }
 
 #### 4.Get user's list : Make GET request with '127.0.0.1:8000/users'
-                                           (or 'bilemo.ttvo.fr/users')
 
 #### 5.Show a user : Make GET request with '127.0.0.1:8000/users/{id}'
-                                       (or 'bilemo.ttvo.fr/users/{id}')
 
 #### 6.Delete a user : Make DELETE request with '127.0.0.1:8000/users/{id}'
-                                            (or 'bilemo.ttvo.fr/users/{id}')
 
 ---------------
 
