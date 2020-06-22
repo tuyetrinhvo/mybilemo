@@ -11,23 +11,13 @@
 !var/sessions/.gitkeep
 !var/SymfonyRequirements.php
 
-
 /.web-server-pid
 
 # Parameter
 /app/config/parameters.yml
 
-# Build data
-/build/
-
 # PHPUnit
 /phpunit.xml
-
-
-# Assets and user uploads
-/web/bundles/
-/web/uploads/
-/web/assets/
 
 # Managed by Composer
 /app/bootstrap.php.cache
@@ -38,7 +28,7 @@
 /vendor/
 
 # Assets managed by Bower
-/web/assets/
+/.idea
 
 
 
